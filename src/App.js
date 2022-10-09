@@ -6,6 +6,8 @@ import Register from "./pages/Register/Register";
 import Home from "./pages/Home/Home";
 import DailyPart from "./pages/DailyPart/DailyPart";
 import BuildDailyPart from "./pages/BuildDailyPart/BuildDailyPart";
+import NewBuildDailyPart from "./pages/NewBuildDailyPart/NewBuildDailyPart";
+import NewDailyPart from "./pages/NewDailyPart/NewDailyPart";
 
 export default function App() {
 
@@ -20,6 +22,8 @@ export default function App() {
           <Route path="/home" element={<Home />}/>
           <Route path="/dailyPart" element={<DailyPart />}/>
           <Route path="/buildDailyPart" element={<BuildDailyPart />}/>
+          <Route path="/dailyPart/new" element={<NewDailyPart />}/>
+          <Route path="/buildDailyPart/new" element={<NewBuildDailyPart />}/>
         </Routes>
       </UserContext.Provider>
     </BrowserRouter>

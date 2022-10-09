@@ -35,10 +35,10 @@ export default function Header() {
         <Container>
             <span>
                 <DailyPart page={page} onClick={()=> toPage("dailyPart")}>
-                    Parte de Equipamentos
+                    Diario de Equipamentos
                 </DailyPart>
                 <BuildDailyPart page={page} onClick={()=> toPage("buildDailyPart")}>
-                    Parte de Obras
+                    Diario de Obras
                 </BuildDailyPart>
             </span>
             <span>
@@ -76,6 +76,7 @@ const DailyPart = styled.div`
     :hover {
         border-bottom: 2px solid #000;
     }
+    display: none;
 `;
 
 const BuildDailyPart = styled.div`
