@@ -1,16 +1,34 @@
 import styled from "styled-components"
 import { IoExit } from 'react-icons/io5';
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../contexts/UserContext";
+import { useLocation } from 'react-router-dom'
 
 export default function Header() {
 
-    const [page, setPage] = useState("home");
+    let location = useLocation();
+    location = location.pathname.replace("/", "")
+
+    const [page, setPage] = useState(location);
+    const { setToken } = useContext(UserContext);
     const navigate = useNavigate();
 
     function toPage(page) {
         setPage(page);
         navigate(`/${page}`);
+    }
+
+    function logOut() {
+
+        const confirm = window.confirm("Tem certeza que deseja sair ?");
+
+        if (!confirm)
+        return;
+
+        localStorage.clear();
+        setToken(null);
+        navigate("/");
     }
 
     return (
@@ -24,13 +42,16 @@ export default function Header() {
                 </BuildDailyPart>
             </span>
             <span>
-                <IoExit size={40}/>
+                <IoExit size={40} onClick={logOut}/>
             </span>
         </Container>
     )
 }
 
 const Container = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;

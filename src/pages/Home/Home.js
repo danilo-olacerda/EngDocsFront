@@ -15,6 +15,7 @@ export default function Home() {
 }
 
 const Container = styled.div`
+    margin-top: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
