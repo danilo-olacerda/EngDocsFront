@@ -1,5 +1,9 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { newBuildDailyPart } from "../../services/dailyService";
+import { useNavigate } from 'react-router-dom';
+import UserContext from '../../contexts/UserContext';
+
 
 function Mod({index, mods, modName, removeMod}){
 
@@ -21,7 +25,7 @@ function Mod({index, mods, modName, removeMod}){
     return (
         <>
             <input type="text" required placeholder="M.O.D." value={mod} onChange={(e)=> handleChange(e)} />
-            <button onClick={remove}>X</button>
+            <button type="button" onClick={remove}>X</button>
         </>
     )
 }
@@ -46,7 +50,7 @@ function Moi({index, mois, moiName, removeMoi}){
     return (
         <>
             <input type="text" required placeholder="M.O.I." value={moi} onChange={(e)=> handleChange(e)} />
-            <button onClick={remove}>X</button>
+            <button type="button" onClick={remove}>X</button>
         </>
     )
 }
@@ -71,7 +75,57 @@ function Equipment({index, equipments, equipmentName, removeEquipment}){
     return (
         <>
             <input type="text" required placeholder="Equipamento" value={equipment} onChange={(e)=> handleChange(e)} />
-            <button onClick={remove}>X</button>
+            <button type="button" onClick={remove}>X</button>
+        </>
+    )
+}
+
+function BuildDailyOccurrence({index, buildDailyOccurrences, buildDailyOccurrenceDescription, removeBuildDailyOccurrence}){
+
+    const [buildDailyOccurrence, setBuildDailyOccurrence] = useState(buildDailyOccurrenceDescription);
+
+    useEffect(() => {
+        setBuildDailyOccurrence(buildDailyOccurrenceDescription);
+    }, [buildDailyOccurrenceDescription]);
+
+    function remove(){
+        removeBuildDailyOccurrence(index);
+    }
+
+    function handleChange(e){
+        setBuildDailyOccurrence(e.target.value);
+        buildDailyOccurrences[index].description = e.target.value;
+    }
+
+    return (
+        <>
+            <input type="text" required placeholder="Ocorrência" value={buildDailyOccurrence} onChange={(e)=> handleChange(e)} />
+            <button type="button" onClick={remove}>X</button>
+        </>
+    )
+}
+
+function Service({index, services, serviceDescription, removeService}){
+
+    const [service, setService] = useState(serviceDescription);
+
+    useEffect(() => {
+        setService(serviceDescription);
+    }, [serviceDescription]);
+
+    function remove(){
+        removeService(index);
+    }
+
+    function handleChange(e){
+        setService(e.target.value);
+        services[index].description = e.target.value;
+    }
+
+    return (
+        <>
+            <input type="text" required placeholder="..." value={service} onChange={(e)=> handleChange(e)} />
+            <button type="button" onClick={remove}>X</button>
         </>
     )
 }
@@ -87,6 +141,12 @@ export default function NewBuildDailyPart(){
     const [mois, setMois] = useState([{name: ""}]);
     const [equipments, setEquipments] = useState([{name: ""}]);
     const [buildDailyOccurrences, setBuildDailyOccurrences] = useState([{description: ""}]);
+    const [services, setServices] = useState([{description: ""}]);
+    const [hired, setHired] = useState("");
+    const [contractor, setContractor] = useState("");
+
+    const navigate = useNavigate();
+    const { token } = useContext(UserContext);
 
     function addMod(){
         let modArray = [...mods];
@@ -124,8 +184,63 @@ export default function NewBuildDailyPart(){
         setBuildDailyOccurrences(buildDailyOccurrenceArray);
     }
 
-    function removebuildDailyOccurrence(index){
+    function removeBuildDailyOccurrence(index){
         setBuildDailyOccurrences(buildDailyOccurrences.filter((buildDailyOccurrence, i) => i !== index));
+    }
+
+    function addService(){
+        let serviceArray = [...services];
+        serviceArray.push({name: ""});
+        setServices(serviceArray);
+    }
+
+    function removeService(index){
+        setServices(services.filter((service, i) => i !== index));
+    }
+
+    async function handleSubmit(e){
+        e.preventDefault();
+
+        const body = {
+            date,
+            build,
+            climate,
+            numberDays,
+            remainingDays,
+            effective: [
+                {
+                    mod: mods,
+                    moi: mois
+                }
+            ],
+            equipment: equipments,
+            buildDailyOccurrence: buildDailyOccurrences,
+            service: services,
+            hired,
+            contractor,
+            supply: "supply"
+        };
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        };
+
+        try {
+            
+            await newBuildDailyPart(body, config);
+            alert("Parte diária cadastrada com sucesso!");
+            navigate("/buildDailyPart");
+
+        } catch (error) {
+
+            if(error.response.status === 401){
+                alert('Sua sessão expirou, faça login novamente');
+                window.location.href = '/';
+            }
+
+        }
     }
 
     return (
@@ -133,7 +248,7 @@ export default function NewBuildDailyPart(){
 
             <Title>Novo diário de obra</Title>
 
-            <form>
+            <form onSubmit={handleSubmit}>
 
                 <Type>
                     Infos do dia:
@@ -155,7 +270,7 @@ export default function NewBuildDailyPart(){
 
                 {mods.map((mod, index)=> <Mod modName={mod.name} key={index} index={index} removeMod={removeMod} mods={mods} />)}
 
-                <button type="add" onClick={addMod}>+</button>
+                <button type="button" onClick={addMod}>+</button>
 
                 <Type>
                     M.O.I.:
@@ -163,7 +278,7 @@ export default function NewBuildDailyPart(){
 
                 {mois.map((moi, index)=> <Moi moiName={moi.name} key={index} index={index} removeMoi={removemoi} mois={mois} />)}
 
-                <button type="add" onClick={addMoi}>+</button>
+                <button type="button" onClick={addMoi}>+</button>
 
                 <Type>
                     Equipamento:
@@ -171,7 +286,41 @@ export default function NewBuildDailyPart(){
 
                 {equipments.map((equipment, index)=> <Equipment equipmentName={equipment.name} key={index} index={index} removeEquipment={removeEquipment} equipments={equipments} />)}
 
-                <button type="add" onClick={addEquipment}>+</button>
+                <button type="button" onClick={addEquipment}>+</button>
+
+                <Type>
+                    Ocorrências:
+                </Type>
+
+                {buildDailyOccurrences.map((buildDailyOccurrence, index)=> <BuildDailyOccurrence buildDailyOccurrenceDescription={buildDailyOccurrence.description} key={index} index={index} removeBuildDailyOccurrence={removeBuildDailyOccurrence} buildDailyOccurrences={buildDailyOccurrences} />)}
+
+                <button type="button" onClick={addbuildDailyOccurrence}>+</button>
+
+                <Type>
+                    Serviço executado/observações/instruções:
+                </Type>
+
+                {services.map((service, index)=> <Service serviceDescription={service.description} key={index} index={index} removeService={removeService} services={services} />)}
+
+                <button type="button" onClick={addService}>+</button>
+
+                <Type>
+                    Contrante:
+                </Type>
+
+                <input type="text" required placeholder="Contratante" value={contractor} onChange={(e)=> setContractor(e.target.value)} />
+
+                <Type>
+                    Contratada:
+                </Type>
+
+                <input type="text" required placeholder="Contrada" value={hired} onChange={(e)=> setHired(e.target.value)} />
+
+                <SendContainer>
+                    <SendButton type="submit">
+                        Salvar
+                    </SendButton>
+                </SendContainer>
 
             </form>
         </Container>
@@ -209,8 +358,6 @@ const Type = styled.div`
     margin-top: 10px;
     width: 100%;
     display: flex;
-    align-items: center;
-    justify-content: center;
     font-size: 20px;
 `;
 
@@ -220,4 +367,22 @@ const Title = styled.h1`
     font-size: 30px;
     font-weight: 700;
     color: #000000;
+`;
+
+const SendContainer = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+const SendButton = styled.button`
+    width: 80%;
+    height: 58px;
+    background: blue;
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #FFFFFF;
 `;

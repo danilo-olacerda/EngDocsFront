@@ -1,5 +1,5 @@
 import Header from '../../components/Header';
-import { getBuildDailyParts } from '../../services/dailyService';
+import { getBuildDailyParts, deleteBuildDailyPart } from '../../services/dailyService';
 import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../contexts/UserContext';
 import styled from 'styled-components';
@@ -36,12 +36,47 @@ export default function BuildDailyPart(){
 
     function handleDate(items) {
 
+        items.sort((a,b) => new Date(b.date) - new Date(a.date));
+
         for(let item of items) {
             item.date = dayjs(item.date).format('DD/MM/YYYY');
         }
 
         setBuildDailyParts(items);
 
+    }
+
+    async function handleDelete(id){
+        const confirm = window.confirm('Tem certeza que deseja excluir o registro ?');
+        if(!confirm) return;
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        };
+
+        try {
+            
+            await deleteBuildDailyPart(id, config);
+            alert('Registro excluído com sucesso');
+            buildDailyParts.splice(buildDailyParts.findIndex(item => item.id === id), 1);
+            setBuildDailyParts([...buildDailyParts]);
+
+        } catch (error) {
+
+            if(error.response.status === 401){
+                alert('Sua sessão expirou, faça login novamente');
+                navigate('/');
+            } else {
+                alert('Não foi possível excluir o registro');
+            }
+
+        }
+    }
+
+    function generatePDF(id){
+        console.log("pdf",id);
     }
 
     return(
@@ -65,9 +100,9 @@ export default function BuildDailyPart(){
                                 <td width="10%">{buildDailyPart.date}</td>
                                 <td width="60%">{buildDailyPart.build.name}</td>
                                 <Actions>
-                                    <AiFillEdit size={20}/>
-                                    <BsTrashFill size={20}/>
-                                    <AiFillFilePdf size={20}/>
+                                    {/* <AiFillEdit size={20}/> */}
+                                    <BsTrashFill size={20} onClick={()=>handleDelete(buildDailyPart.id)}/>
+                                    <AiFillFilePdf size={20} onClick={()=>generatePDF(buildDailyPart.id)} />
                                 </Actions>
                             </tr>
                         ))}

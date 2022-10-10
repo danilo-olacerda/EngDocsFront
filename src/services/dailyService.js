@@ -31,3 +31,19 @@ export const getDailyPart = async (id, header) => {
     return response.data;
             
 };
+
+export const newBuildDailyPart = async (data, header) => {
+        
+    const response = await api.post('/buildDailyPart', data, header);
+    
+    return response.data;
+        
+};
+
+export const deleteBuildDailyPart = async (id, header) => {
+        
+    const response = await api.delete(`/buildDailyPart/${id}`, header);
+    
+    return response.data;
+            
+};
