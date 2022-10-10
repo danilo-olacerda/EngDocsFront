@@ -1,5 +1,6 @@
 import Header from '../../components/Header';
 import { getBuildDailyParts, deleteBuildDailyPart } from '../../services/dailyService';
+import { generateBuildDailyPartPDF } from '../../services/pdfService';
 import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../contexts/UserContext';
 import styled from 'styled-components';
@@ -75,8 +76,8 @@ export default function BuildDailyPart(){
         }
     }
 
-    function generatePDF(id){
-        console.log("pdf",id);
+    function generatePDF(buildDailyPartPDF){
+        generateBuildDailyPartPDF(buildDailyPartPDF);
     }
 
     return(
@@ -102,7 +103,7 @@ export default function BuildDailyPart(){
                                 <Actions>
                                     {/* <AiFillEdit size={20}/> */}
                                     <BsTrashFill size={20} onClick={()=>handleDelete(buildDailyPart.id)}/>
-                                    <AiFillFilePdf size={20} onClick={()=>generatePDF(buildDailyPart.id)} />
+                                    <AiFillFilePdf size={20} onClick={()=>generatePDF(buildDailyPart)} />
                                 </Actions>
                             </tr>
                         ))}

@@ -180,7 +180,7 @@ export default function NewBuildDailyPart(){
 
     function addbuildDailyOccurrence(){
         let buildDailyOccurrenceArray = [...buildDailyOccurrences];
-        buildDailyOccurrenceArray.push({name: ""});
+        buildDailyOccurrenceArray.push({description: ""});
         setBuildDailyOccurrences(buildDailyOccurrenceArray);
     }
 
@@ -190,7 +190,7 @@ export default function NewBuildDailyPart(){
 
     function addService(){
         let serviceArray = [...services];
-        serviceArray.push({name: ""});
+        serviceArray.push({description: ""});
         setServices(serviceArray);
     }
 
