@@ -11,6 +11,7 @@ export default function Header() {
     location = location.pathname.replace("/", "")
 
     const [page, setPage] = useState(location);
+    const [isHovered, setIsHovered] = useState(false);
     const { setToken } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -49,42 +50,46 @@ export default function Header() {
                 justifyContent: 'space-between',
             }}
         >
-            <Group position="apart" style={{ width: '100%' }}>
-                <Group spacing="xl">
-                    <Text
-                        size="lg"
-                        weight={600}
-                        style={{
-                            cursor: 'pointer',
-                            paddingBottom: 2,
-                            borderBottom: page === "dailyPart" ? '3px solid #000000' : '3px solid transparent',
-                            transition: 'all 0.2s ease',
-                            display: 'none',
-                        }}
-                        onClick={() => toPage("dailyPart")}
-                    >
-                        Diário de Equipamentos
-                    </Text>
-                    <Text
-                        size="lg"
-                        weight={600}
-                        style={{
-                            cursor: 'pointer',
-                            paddingBottom: 2,
-                            borderBottom: page === "buildDailyPart" ? '3px solid #000000' : '3px solid transparent',
-                            transition: 'all 0.2s ease',
-                        }}
-                        onClick={() => toPage("buildDailyPart")}
-                    >
-                        Diário de Obras
-                    </Text>
-                </Group>
+            <Group spacing="xl">
+                <Text
+                    size="lg"
+                    weight={600}
+                    style={{
+                        cursor: 'pointer',
+                        paddingBottom: 2,
+                        borderBottom: page === "dailyPart" ? '3px solid #000000' : '3px solid transparent',
+                        transition: 'all 0.2s ease'
+                    }}
+                    onClick={() => toPage("dailyPart")}
+                >
+                    Diário de Equipamentos
+                </Text>
+                <Text
+                    size="lg"
+                    weight={600}
+                    style={{
+                        cursor: 'pointer',
+                        paddingBottom: 2,
+                        borderBottom: page === "buildDailyPart" ? '3px solid #000000' : '3px solid transparent',
+                        transition: 'all 0.2s ease',
+                    }}
+                    onClick={() => toPage("buildDailyPart")}
+                >
+                    Diário de Obras
+                </Text>
+            </Group>
+            <Group>
                 <ActionIcon
                     size="lg"
                     onClick={logOut}
-                    style={{ backgroundColor: 'transparent' }}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    style={{
+                        backgroundColor: isHovered ? 'rgba(0, 0, 0, 0.1)' : 'transparent',
+                        transition: 'background-color 0.2s ease'
+                    }}
                 >
-                    <IoExit size={28} />
+                    <IoExit size={28} color='#000' />
                 </ActionIcon>
             </Group>
         </Box>

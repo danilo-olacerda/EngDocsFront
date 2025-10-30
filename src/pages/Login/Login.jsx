@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Loader } from '@mantine/core';
 import UserContext from "../../contexts/UserContext.jsx";
 import { login } from "../../services/authService.jsx";
-import EngDocsIcon from '../../assets/Eng.png';
+import EngDocsIcon from '../../assets/Eng.webp';
 
 export default function Login() {
 

@@ -1,8 +1,9 @@
-import { Container, Title, Paper, TextInput, PasswordInput, Button, Text, Center, Box, Stack } from '@mantine/core';
+import { Container, Title, Paper, TextInput, PasswordInput, Button, Text, Center, Box, Stack, Image } from '@mantine/core';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Loader } from '@mantine/core';
 import { register } from "../../services/authService.jsx";
+import EngDocsIcon from '../../assets/Eng.webp';
 
 export default function Register() {
 
@@ -70,17 +71,7 @@ export default function Register() {
             }}
         >
             <Container size={500} my={40}>
-                <Title
-                    align="center"
-                    style={{
-                        fontWeight: 900,
-                        fontSize: 42,
-                        marginBottom: '32px',
-                        color: '#000000',
-                    }}
-                >
-                    EngDocs
-                </Title>
+                <Image src={EngDocsIcon} alt="EngDocs" height={100} />
 
                 <Paper
                     withBorder
