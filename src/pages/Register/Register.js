@@ -1,8 +1,7 @@
-
+import { Container, Title, Paper, TextInput, PasswordInput, Button, Text, Center, Box, Stack } from '@mantine/core';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ThreeDots } from  'react-loader-spinner';
-import { Container, LoginPage } from "./styles";
+import { Loader } from '@mantine/core';
 import { register } from "../../services/authService";
 
 export default function Register() {
@@ -60,21 +59,147 @@ export default function Register() {
     }
 
     return (
-        <Container>
-            <h1>EngDocs</h1>
-            <form action="submit" onSubmit={send}>
-                <input type="name" disabled={loading} placeholder="Nome" required value={name} onChange={(e) => setName(e.target.value)}/>
-                <input type="email" disabled={loading} placeholder="E-mail" required value={email} onChange={(e) => setEmail(e.target.value)}/>
-                <input type="password" minLength="10" disabled={loading} placeholder="Senha" required value={password} onChange={(e) => setPassword(e.target.value)}/>
-                <input type="password" minLength="10" disabled={loading} placeholder="Confirme a senha" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
-                <input type="text" disabled={loading} placeholder="Nome da empresa" required value={companyName} onChange={(e) => setCompanyName(e.target.value)}/>
-                <input type="text" disabled={loading} placeholder="Endereço da empresa" required value={companyAddress} onChange={(e) => setCompanyAddress(e.target.value)}/>
-                <input type="tel" maxLength="9" disabled={loading} placeholder="CEP da empresa (apenas números)" required value={companyCEP} onChange={(e) => setCompanyCEP(e.target.value)}/>
-                <button type="submit" disabled={loading}>
-                    {!loading ? <h3>Cadastrar</h3> : <ThreeDots color="#FFFFFF" height={60} width={60} />}
-                </button>
-            </form>
-            <LoginPage onClick={() => navigate("/")} enabled={loading}>Empresa já cadastrada ? Faça login!</LoginPage>
-        </Container>
+        <Box
+            sx={(theme) => ({
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: '100vh',
+                backgroundColor: theme.colors.gray[0],
+                padding: theme.spacing.md,
+            })}
+        >
+            <Container size={500} my={40}>
+                <Title
+                    align="center"
+                    sx={(theme) => ({
+                        fontWeight: 900,
+                        fontSize: 42,
+                        marginBottom: theme.spacing.xl,
+                        color: theme.black,
+                    })}
+                >
+                    EngDocs
+                </Title>
+
+                <Paper
+                    withBorder
+                    shadow="md"
+                    p={30}
+                    mt={30}
+                    radius="md"
+                    sx={(theme) => ({
+                        backgroundColor: theme.white,
+                    })}
+                >
+                    <form onSubmit={send}>
+                        <Stack spacing="md">
+                            <TextInput
+                                label="Nome"
+                                placeholder="Seu nome completo"
+                                required
+                                disabled={loading}
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                size="md"
+                            />
+                            <TextInput
+                                label="E-mail"
+                                placeholder="seu@email.com"
+                                type="email"
+                                required
+                                disabled={loading}
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                size="md"
+                            />
+                            <PasswordInput
+                                label="Senha"
+                                placeholder="Mínimo 10 caracteres"
+                                required
+                                disabled={loading}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                size="md"
+                                minLength={10}
+                            />
+                            <PasswordInput
+                                label="Confirme a senha"
+                                placeholder="Digite a senha novamente"
+                                required
+                                disabled={loading}
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                size="md"
+                                minLength={10}
+                            />
+                            <TextInput
+                                label="Nome da empresa"
+                                placeholder="Nome da sua empresa"
+                                required
+                                disabled={loading}
+                                value={companyName}
+                                onChange={(e) => setCompanyName(e.target.value)}
+                                size="md"
+                            />
+                            <TextInput
+                                label="Endereço da empresa"
+                                placeholder="Endereço completo"
+                                required
+                                disabled={loading}
+                                value={companyAddress}
+                                onChange={(e) => setCompanyAddress(e.target.value)}
+                                size="md"
+                            />
+                            <TextInput
+                                label="CEP da empresa"
+                                placeholder="Apenas números"
+                                type="tel"
+                                maxLength={9}
+                                required
+                                disabled={loading}
+                                value={companyCEP}
+                                onChange={(e) => setCompanyCEP(e.target.value)}
+                                size="md"
+                            />
+                            <Button
+                                fullWidth
+                                type="submit"
+                                disabled={loading}
+                                size="md"
+                                color="dark"
+                                mt="md"
+                                sx={(theme) => ({
+                                    backgroundColor: theme.black,
+                                    '&:hover': {
+                                        backgroundColor: theme.colors.dark[9],
+                                    },
+                                })}
+                            >
+                                {loading ? <Loader size="sm" color="white" /> : 'Cadastrar'}
+                            </Button>
+                        </Stack>
+                    </form>
+                </Paper>
+
+                <Center mt="xl">
+                    <Text
+                        size="sm"
+                        weight={600}
+                        sx={(theme) => ({
+                            cursor: loading ? 'not-allowed' : 'pointer',
+                            color: theme.colors.dark[6],
+                            '&:hover': loading ? {} : {
+                                color: theme.black,
+                                textDecoration: 'underline',
+                            },
+                        })}
+                        onClick={() => !loading && navigate("/")}
+                    >
+                        Empresa já cadastrada? Faça login!
+                    </Text>
+                </Center>
+            </Container>
+        </Box>
     )
 };

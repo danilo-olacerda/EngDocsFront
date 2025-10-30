@@ -1,8 +1,10 @@
-import styled from "styled-components";
+import { Box, Container, Title, TextInput, Button, Stack, Group, ActionIcon, Text, Paper } from '@mantine/core';
 import { useEffect, useState, useContext } from "react";
 import { newBuildDailyPart } from "../../services/dailyService";
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../../contexts/UserContext';
+import Header from '../../components/Header';
+import { BsTrashFill } from 'react-icons/bs';
 
 
 function Mod({index, mods, modName, removeMod}){
@@ -23,10 +25,18 @@ function Mod({index, mods, modName, removeMod}){
     }
 
     return (
-        <>
-            <input type="text" required placeholder="M.O.D." value={mod} onChange={(e)=> handleChange(e)} />
-            <button type="button" onClick={remove}>X</button>
-        </>
+        <Group spacing="xs" style={{ width: '100%' }}>
+            <TextInput 
+                placeholder="M.O.D." 
+                value={mod} 
+                onChange={(e)=> handleChange(e)} 
+                required
+                style={{ flex: 1 }}
+            />
+            <ActionIcon color="red" variant="filled" onClick={remove}>
+                <BsTrashFill size={16} />
+            </ActionIcon>
+        </Group>
     )
 }
 
@@ -48,10 +58,18 @@ function Moi({index, mois, moiName, removeMoi}){
     }
 
     return (
-        <>
-            <input type="text" required placeholder="M.O.I." value={moi} onChange={(e)=> handleChange(e)} />
-            <button type="button" onClick={remove}>X</button>
-        </>
+        <Group spacing="xs" style={{ width: '100%' }}>
+            <TextInput 
+                placeholder="M.O.I." 
+                value={moi} 
+                onChange={(e)=> handleChange(e)} 
+                required
+                style={{ flex: 1 }}
+            />
+            <ActionIcon color="red" variant="filled" onClick={remove}>
+                <BsTrashFill size={16} />
+            </ActionIcon>
+        </Group>
     )
 }
 
@@ -73,10 +91,18 @@ function Equipment({index, equipments, equipmentName, removeEquipment}){
     }
 
     return (
-        <>
-            <input type="text" required placeholder="Equipamento" value={equipment} onChange={(e)=> handleChange(e)} />
-            <button type="button" onClick={remove}>X</button>
-        </>
+        <Group spacing="xs" style={{ width: '100%' }}>
+            <TextInput 
+                placeholder="Equipamento" 
+                value={equipment} 
+                onChange={(e)=> handleChange(e)} 
+                required
+                style={{ flex: 1 }}
+            />
+            <ActionIcon color="red" variant="filled" onClick={remove}>
+                <BsTrashFill size={16} />
+            </ActionIcon>
+        </Group>
     )
 }
 
@@ -98,10 +124,18 @@ function BuildDailyOccurrence({index, buildDailyOccurrences, buildDailyOccurrenc
     }
 
     return (
-        <>
-            <input type="text" required placeholder="Ocorrência" value={buildDailyOccurrence} onChange={(e)=> handleChange(e)} />
-            <button type="button" onClick={remove}>X</button>
-        </>
+        <Group spacing="xs" style={{ width: '100%' }}>
+            <TextInput 
+                placeholder="Ocorrência" 
+                value={buildDailyOccurrence} 
+                onChange={(e)=> handleChange(e)} 
+                required
+                style={{ flex: 1 }}
+            />
+            <ActionIcon color="red" variant="filled" onClick={remove}>
+                <BsTrashFill size={16} />
+            </ActionIcon>
+        </Group>
     )
 }
 
@@ -123,10 +157,18 @@ function Service({index, services, serviceDescription, removeService}){
     }
 
     return (
-        <>
-            <input type="text" required placeholder="..." value={service} onChange={(e)=> handleChange(e)} />
-            <button type="button" onClick={remove}>X</button>
-        </>
+        <Group spacing="xs" style={{ width: '100%' }}>
+            <TextInput 
+                placeholder="Descrição do serviço" 
+                value={service} 
+                onChange={(e)=> handleChange(e)} 
+                required
+                style={{ flex: 1 }}
+            />
+            <ActionIcon color="red" variant="filled" onClick={remove}>
+                <BsTrashFill size={16} />
+            </ActionIcon>
+        </Group>
     )
 }
 
@@ -244,145 +286,123 @@ export default function NewBuildDailyPart(){
     }
 
     return (
-        <Container>
+        <>
+            <Header />
+            <Box
+                sx={(theme) => ({
+                    marginTop: 80,
+                    padding: theme.spacing.xl,
+                    minHeight: 'calc(100vh - 80px)',
+                    backgroundColor: '#fafafa',
+                })}
+            >
+                <Container size="lg">
+                    <Title order={2} mb="xl">Novo diário de obra</Title>
 
-            <Title>Novo diário de obra</Title>
+                    <Paper withBorder shadow="sm" p="xl" radius="md" sx={{ backgroundColor: '#ffffff' }}>
+                        <form onSubmit={handleSubmit}>
+                            <Stack spacing="md">
+                                
+                                <Text size="lg" weight={600} mt="md">Infos do dia:</Text>
+                                
+                                <TextInput 
+                                    type="date" 
+                                    label="Data"
+                                    required 
+                                    value={date} 
+                                    onChange={(e)=> setDate(e.target.value)} 
+                                />
+                                <TextInput 
+                                    placeholder="Nome da obra" 
+                                    label="Obra"
+                                    required 
+                                    value={build} 
+                                    onChange={(e)=> setBuild(e.target.value)} 
+                                />
+                                <TextInput 
+                                    placeholder="Ensolarado, nublado, etc." 
+                                    label="Tempo"
+                                    required 
+                                    value={climate} 
+                                    onChange={(e)=> setClimate(e.target.value)} 
+                                />
+                                <TextInput 
+                                    type="number" 
+                                    min={0} 
+                                    placeholder="0" 
+                                    label="Dias corridos"
+                                    required 
+                                    value={numberDays} 
+                                    onChange={(e)=> setNumberDays(e.target.value)} 
+                                />
+                                <TextInput 
+                                    type="number" 
+                                    min={0} 
+                                    placeholder="0" 
+                                    label="Dias restantes"
+                                    required 
+                                    value={remainingDays} 
+                                    onChange={(e)=> setRemainingDays(e.target.value)} 
+                                />
 
-            <form onSubmit={handleSubmit}>
+                                <Text size="lg" weight={600} mt="lg">Efetivo:</Text>
 
-                <Type>
-                    Infos do dia:
-                </Type>
+                                <Text size="md" weight={500}>M.O.D.:</Text>
+                                {mods.map((mod, index)=> <Mod modName={mod.name} key={index} index={index} removeMod={removeMod} mods={mods} />)}
+                                <Button variant="outline" color="dark" onClick={addMod} fullWidth>+ Adicionar M.O.D.</Button>
 
-                <input type="date" required value={date} onChange={(e)=> setDate(e.target.value)} />
-                <input type="text" required placeholder="Obra" value={build} onChange={(e)=> setBuild(e.target.value)} />
-                <input type="text" required placeholder="Tempo" value={climate} onChange={(e)=> setClimate(e.target.value)} /> {/* Depois alterar para checkbox */}
-                <input type="number" min={0} required placeholder="Dias corridos" value={numberDays} onChange={(e)=> setNumberDays(e.target.value)} />
-                <input type="number" min={0} required placeholder="Dias restantes" value={remainingDays} onChange={(e)=> setRemainingDays(e.target.value)} />
+                                <Text size="md" weight={500} mt="sm">M.O.I.:</Text>
+                                {mois.map((moi, index)=> <Moi moiName={moi.name} key={index} index={index} removeMoi={removemoi} mois={mois} />)}
+                                <Button variant="outline" color="dark" onClick={addMoi} fullWidth>+ Adicionar M.O.I.</Button>
 
-                <Type>
-                    Efetivo:
-                </Type>
+                                <Text size="md" weight={500} mt="sm">Equipamento:</Text>
+                                {equipments.map((equipment, index)=> <Equipment equipmentName={equipment.name} key={index} index={index} removeEquipment={removeEquipment} equipments={equipments} />)}
+                                <Button variant="outline" color="dark" onClick={addEquipment} fullWidth>+ Adicionar Equipamento</Button>
 
-                <Type>
-                    M.O.D.:
-                </Type>
+                                <Text size="lg" weight={600} mt="lg">Ocorrências:</Text>
+                                {buildDailyOccurrences.map((buildDailyOccurrence, index)=> <BuildDailyOccurrence buildDailyOccurrenceDescription={buildDailyOccurrence.description} key={index} index={index} removeBuildDailyOccurrence={removeBuildDailyOccurrence} buildDailyOccurrences={buildDailyOccurrences} />)}
+                                <Button variant="outline" color="dark" onClick={addbuildDailyOccurrence} fullWidth>+ Adicionar Ocorrência</Button>
 
-                {mods.map((mod, index)=> <Mod modName={mod.name} key={index} index={index} removeMod={removeMod} mods={mods} />)}
+                                <Text size="lg" weight={600} mt="lg">Serviço executado/observações/instruções:</Text>
+                                {services.map((service, index)=> <Service serviceDescription={service.description} key={index} index={index} removeService={removeService} services={services} />)}
+                                <Button variant="outline" color="dark" onClick={addService} fullWidth>+ Adicionar Serviço</Button>
 
-                <button type="button" onClick={addMod}>+</button>
+                                <Text size="lg" weight={600} mt="lg">Contratante:</Text>
+                                <TextInput 
+                                    placeholder="Nome do contratante" 
+                                    required 
+                                    value={contractor} 
+                                    onChange={(e)=> setContractor(e.target.value)} 
+                                />
 
-                <Type>
-                    M.O.I.:
-                </Type>
+                                <Text size="lg" weight={600} mt="md">Contratada:</Text>
+                                <TextInput 
+                                    placeholder="Nome da contratada" 
+                                    required 
+                                    value={hired} 
+                                    onChange={(e)=> setHired(e.target.value)} 
+                                />
 
-                {mois.map((moi, index)=> <Moi moiName={moi.name} key={index} index={index} removeMoi={removemoi} mois={mois} />)}
-
-                <button type="button" onClick={addMoi}>+</button>
-
-                <Type>
-                    Equipamento:
-                </Type>
-
-                {equipments.map((equipment, index)=> <Equipment equipmentName={equipment.name} key={index} index={index} removeEquipment={removeEquipment} equipments={equipments} />)}
-
-                <button type="button" onClick={addEquipment}>+</button>
-
-                <Type>
-                    Ocorrências:
-                </Type>
-
-                {buildDailyOccurrences.map((buildDailyOccurrence, index)=> <BuildDailyOccurrence buildDailyOccurrenceDescription={buildDailyOccurrence.description} key={index} index={index} removeBuildDailyOccurrence={removeBuildDailyOccurrence} buildDailyOccurrences={buildDailyOccurrences} />)}
-
-                <button type="button" onClick={addbuildDailyOccurrence}>+</button>
-
-                <Type>
-                    Serviço executado/observações/instruções:
-                </Type>
-
-                {services.map((service, index)=> <Service serviceDescription={service.description} key={index} index={index} removeService={removeService} services={services} />)}
-
-                <button type="button" onClick={addService}>+</button>
-
-                <Type>
-                    Contrante:
-                </Type>
-
-                <input type="text" required placeholder="Contratante" value={contractor} onChange={(e)=> setContractor(e.target.value)} />
-
-                <Type>
-                    Contratada:
-                </Type>
-
-                <input type="text" required placeholder="Contrada" value={hired} onChange={(e)=> setHired(e.target.value)} />
-
-                <SendContainer>
-                    <SendButton type="submit">
-                        Salvar
-                    </SendButton>
-                </SendContainer>
-
-            </form>
-        </Container>
+                                <Button 
+                                    type="submit" 
+                                    size="lg" 
+                                    color="dark" 
+                                    fullWidth
+                                    mt="xl"
+                                    sx={{
+                                        backgroundColor: '#000000',
+                                        '&:hover': {
+                                            backgroundColor: '#2c2c2c',
+                                        },
+                                    }}
+                                >
+                                    Salvar
+                                </Button>
+                            </Stack>
+                        </form>
+                    </Paper>
+                </Container>
+            </Box>
+        </>
     )
 }
-
-const Container = styled.div`
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    * {
-        margin: 5px;
-    }
-    form {
-        input {
-            border: none;
-            background: lightgray;
-            border-radius: 5px;
-            height: 58px;
-            padding-top: 18px;
-            padding-bottom: 17px;
-            padding-left: 15px;
-            font-weight: 400;
-            font-size: 20px;
-            line-height: 23px;
-            color: #000000;
-            outline: none;
-        }
-    }
-`;
-
-const Type = styled.div`
-    margin-top: 10px;
-    width: 100%;
-    display: flex;
-    font-size: 20px;
-`;
-
-const Title = styled.h1`
-    margin-top: 20px;
-    margin-bottom: 20px;
-    font-size: 30px;
-    font-weight: 700;
-    color: #000000;
-`;
-
-const SendContainer = styled.div`
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
-
-const SendButton = styled.button`
-    width: 80%;
-    height: 58px;
-    background: blue;
-    border: none;
-    border-radius: 5px;
-    font-size: 20px;
-    font-weight: 700;
-    color: #FFFFFF;
-`;

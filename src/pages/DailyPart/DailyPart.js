@@ -1,5 +1,5 @@
 import Header from '../../components/Header';
-import styled from 'styled-components';
+import { Box, Container, Button, Table, ActionIcon, Group, Loader, Center } from '@mantine/core';
 import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../contexts/UserContext';
 import { getDailyParts } from '../../services/dailyService';
@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 export default function DailyPart(){
 
     const [dailyParts, setDailyParts] = useState([{build: {}}]);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const { token } = useContext(UserContext);
 
@@ -24,12 +25,14 @@ export default function DailyPart(){
 
         getDailyParts(header).then(response => {
             handleDate(response);
+            setLoading(false);
         })
         .catch(error => {
             if(error.response.status === 401){
                 alert('Sua sessão expirou, faça login novamente');
                 window.location.href = '/';
             }
+            setLoading(false);
         });
 
     }, [token]);
@@ -47,76 +50,106 @@ export default function DailyPart(){
     return(
         <>
             <Header />
-            <Container>
-                <AddButton onClick={()=> navigate("/dailyPart/new")}>
-                    Adicionar nova
-                </AddButton>
-                <table>
-                    <thead>
-                        <tr>
-                            <th width="10%">Data</th>
-                            <th width="60%">Obra</th>
-                            <th width="30%">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {dailyParts.map((dailyPart, index) => (
-                            <tr key={index}>
-                                <td width="10%">{dailyPart.date}</td>
-                                <td width="60%">{dailyPart.build.name}</td>
-                                <Actions>
-                                    <AiFillEdit size={20}/>
-                                    <BsTrashFill size={20}/>
-                                    <AiFillFilePdf size={20}/>
-                                </Actions>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </Container>
+            <Box
+                sx={(theme) => ({
+                    marginTop: 80,
+                    padding: theme.spacing.xl,
+                    minHeight: 'calc(100vh - 80px)',
+                    backgroundColor: '#fafafa',
+                })}
+            >
+                <Container size="xl">
+                    <Button
+                        fullWidth
+                        size="lg"
+                        color="dark"
+                        onClick={() => navigate("/dailyPart/new")}
+                        sx={{
+                            backgroundColor: '#000000',
+                            marginBottom: 24,
+                            '&:hover': {
+                                backgroundColor: '#2c2c2c',
+                            },
+                        }}
+                    >
+                        Adicionar nova
+                    </Button>
+
+                    {loading ? (
+                        <Center style={{ minHeight: 200 }}>
+                            <Loader size="lg" color="dark" />
+                        </Center>
+                    ) : (
+                        <Table 
+                            striped 
+                            highlightOnHover
+                            withTableBorder
+                            withColumnBorders
+                            sx={(theme) => ({
+                                backgroundColor: '#ffffff',
+                                '& thead tr th': {
+                                    backgroundColor: '#f5f5f5',
+                                    color: '#000000',
+                                    fontWeight: 600,
+                                    borderBottom: '2px solid #e0e0e0',
+                                },
+                                '& tbody tr:hover': {
+                                    backgroundColor: '#fafafa',
+                                },
+                            })}
+                        >
+                            <thead>
+                                <tr>
+                                    <th style={{ width: '15%' }}>Data</th>
+                                    <th style={{ width: '55%' }}>Obra</th>
+                                    <th style={{ width: '30%' }}>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {dailyParts.length === 0 || !dailyParts[0].date ? (
+                                    <tr>
+                                        <td colSpan={3} style={{ textAlign: 'center', padding: 40 }}>
+                                            Nenhum registro encontrado
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    dailyParts.map((dailyPart, index) => (
+                                        <tr key={index}>
+                                            <td>{dailyPart.date}</td>
+                                            <td>{dailyPart.build?.name || 'N/A'}</td>
+                                            <td>
+                                                <Group spacing="sm">
+                                                    <ActionIcon 
+                                                        color="dark" 
+                                                        variant="subtle"
+                                                        size="lg"
+                                                    >
+                                                        <AiFillEdit size={20} />
+                                                    </ActionIcon>
+                                                    <ActionIcon 
+                                                        color="red" 
+                                                        variant="subtle"
+                                                        size="lg"
+                                                    >
+                                                        <BsTrashFill size={18} />
+                                                    </ActionIcon>
+                                                    <ActionIcon 
+                                                        color="dark" 
+                                                        variant="subtle"
+                                                        size="lg"
+                                                    >
+                                                        <AiFillFilePdf size={22} />
+                                                    </ActionIcon>
+                                                </Group>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </Table>
+                    )}
+                </Container>
+            </Box>
         </>
     )
 }
-
-const Container = styled.div`
-    margin-top: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 100%;
-    table {
-        margin-top: 20px;
-        width: 80%;
-        th {
-            text-align: left;
-            padding: 10px;
-            border-bottom: 1px solid #000;
-        }
-        td {
-            padding: 10px;
-            border-bottom: 1px solid #000;
-        }
-    }
-`;
-
-const Actions = styled.td`
-    width: 30%;
-    * {
-        margin-right: 5px;
-        cursor: pointer;
-    }
-`;
-
-const AddButton = styled.button`
-    width: 80%;
-    height: 40px;
-    background-color: lightblue;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-    color: #fff;
-    font-weight: bold;
-    font-size: 20px;
-`;

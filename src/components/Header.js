@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import { Box, Group, Text, ActionIcon } from '@mantine/core';
 import { IoExit } from 'react-icons/io5';
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -32,61 +32,71 @@ export default function Header() {
     }
 
     return (
-        <Container>
-            <span>
-                <DailyPart page={page} onClick={()=> toPage("dailyPart")}>
-                    Diario de Equipamentos
-                </DailyPart>
-                <BuildDailyPart page={page} onClick={()=> toPage("buildDailyPart")}>
-                    Diario de Obras
-                </BuildDailyPart>
-            </span>
-            <span>
-                <IoExit size={40} onClick={logOut}/>
-            </span>
-        </Container>
+        <Box
+            component="header"
+            sx={(theme) => ({
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 60,
+                borderBottom: `1px solid ${theme.colors.gray[3]}`,
+                backgroundColor: theme.white,
+                zIndex: 100,
+                display: 'flex',
+                alignItems: 'center',
+                padding: '0 20px',
+                justifyContent: 'space-between',
+            })}
+        >
+            <Group position="apart" sx={{ width: '100%' }}>
+                <Group spacing="xl">
+                    <Text
+                        size="lg"
+                        weight={600}
+                        sx={(theme) => ({
+                            cursor: 'pointer',
+                            paddingBottom: 2,
+                            borderBottom: page === "dailyPart" ? `3px solid ${theme.black}` : '3px solid transparent',
+                            transition: 'all 0.2s ease',
+                            '&:hover': {
+                                borderBottom: `3px solid ${theme.colors.gray[6]}`,
+                            },
+                            display: 'none',
+                        })}
+                        onClick={() => toPage("dailyPart")}
+                    >
+                        Diário de Equipamentos
+                    </Text>
+                    <Text
+                        size="lg"
+                        weight={600}
+                        sx={(theme) => ({
+                            cursor: 'pointer',
+                            paddingBottom: 2,
+                            borderBottom: page === "buildDailyPart" ? `3px solid ${theme.black}` : '3px solid transparent',
+                            transition: 'all 0.2s ease',
+                            '&:hover': {
+                                borderBottom: `3px solid ${theme.colors.gray[6]}`,
+                            },
+                        })}
+                        onClick={() => toPage("buildDailyPart")}
+                    >
+                        Diário de Obras
+                    </Text>
+                </Group>
+                <ActionIcon
+                    size="lg"
+                    onClick={logOut}
+                    sx={(theme) => ({
+                        '&:hover': {
+                            backgroundColor: theme.colors.gray[1],
+                        },
+                    })}
+                >
+                    <IoExit size={28} />
+                </ActionIcon>
+            </Group>
+        </Box>
     )
 }
-
-const Container = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 50px;
-    width: 100%;
-    background-color: #fff;
-    box-shadow: 0 0 5px #000;
-    padding: 0 10px;
-    span {
-        cursor: pointer;
-        display: flex;
-    }
-`;
-
-const DailyPart = styled.div`
-    display: flex;
-    align-items: center;
-    height: 50px;
-    text-align: center;
-    margin-right: 30px;
-    border-bottom: ${props => props.page === "dailyPart" ? "2px solid red" : "none"};
-    :hover {
-        border-bottom: 2px solid #000;
-    }
-    display: none;
-`;
-
-const BuildDailyPart = styled.div`
-    display: flex;
-    align-items: center;
-    height: 50px;
-    text-align: center;
-    margin-right: 30px;
-    border-bottom: ${props => props.page === "buildDailyPart" ? "2px solid red" : "none"};
-    :hover {
-        border-bottom: 2px solid #000;
-    }
-`;

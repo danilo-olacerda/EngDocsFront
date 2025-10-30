@@ -1,8 +1,7 @@
-import { Container, RegisterPage } from "./styles.js";
-import { useState } from "react";
+import { Container, Title, Paper, TextInput, PasswordInput, Button, Text, Center, Box } from '@mantine/core';
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { ThreeDots } from  'react-loader-spinner';
-import {useContext} from "react";
+import { Loader } from '@mantine/core';
 import UserContext from "../../contexts/UserContext.js";
 import { login } from "../../services/authService.js";
 
@@ -34,21 +33,99 @@ export default function Login() {
     } finally {
         setLoading(false);
     }
-    
-    
   }
 
   return (
-    <Container>
-      <h1>EngDocs</h1>
-      <form action="submit" onSubmit={send}>
-        <input type="email" disabled={loading} placeholder="E-mail" required value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" disabled={loading} placeholder="Senha" required value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit" disabled={loading}>
-          {!loading ? <h3>Entrar</h3> : <ThreeDots color="#FFFFFF" height={60} width={60} />}
-        </button>
-      </form>
-      <RegisterPage onClick={() => navigate("/register")} enabled={loading}>Criar nova empresa</RegisterPage>
-    </Container>
+    <Box
+      sx={(theme) => ({
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        backgroundColor: theme.colors.gray[0],
+        padding: theme.spacing.md,
+      })}
+    >
+      <Container size={420} my={40}>
+        <Title
+          align="center"
+          sx={(theme) => ({
+            fontWeight: 900,
+            fontSize: 42,
+            marginBottom: theme.spacing.xl,
+            color: theme.black,
+          })}
+        >
+          EngDocs
+        </Title>
+
+        <Paper
+          withBorder
+          shadow="md"
+          p={30}
+          mt={30}
+          radius="md"
+          sx={(theme) => ({
+            backgroundColor: theme.white,
+          })}
+        >
+          <form onSubmit={send}>
+            <TextInput
+              label="E-mail"
+              placeholder="seu@email.com"
+              required
+              disabled={loading}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              size="md"
+              mb="md"
+            />
+            <PasswordInput
+              label="Senha"
+              placeholder="Sua senha"
+              required
+              disabled={loading}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              size="md"
+              mb="xl"
+            />
+            <Button
+              fullWidth
+              type="submit"
+              disabled={loading}
+              size="md"
+              color="dark"
+              sx={(theme) => ({
+                backgroundColor: theme.black,
+                '&:hover': {
+                  backgroundColor: theme.colors.dark[9],
+                },
+              })}
+            >
+              {loading ? <Loader size="sm" color="white" /> : 'Entrar'}
+            </Button>
+          </form>
+        </Paper>
+
+        <Center mt="xl">
+          <Text
+            size="sm"
+            weight={600}
+            sx={(theme) => ({
+              cursor: loading ? 'not-allowed' : 'pointer',
+              color: theme.colors.dark[6],
+              '&:hover': loading ? {} : {
+                color: theme.black,
+                textDecoration: 'underline',
+              },
+            })}
+            onClick={() => !loading && navigate("/register")}
+          >
+            Criar nova empresa
+          </Text>
+        </Center>
+      </Container>
+    </Box>
   )
 };
