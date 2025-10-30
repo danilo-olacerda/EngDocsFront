@@ -289,17 +289,17 @@ export default function NewBuildDailyPart() {
         <>
             <Header />
             <Box
-                sx={(theme) => ({
+                style={{
                     marginTop: 80,
-                    padding: theme.spacing.xl,
+                    padding: '32px',
                     minHeight: 'calc(100vh - 80px)',
                     backgroundColor: '#fafafa',
-                })}
+                }}
             >
                 <Container size="lg">
                     <Title order={2} mb="xl">Novo diário de obra</Title>
 
-                    <Paper withBorder shadow="sm" p="xl" radius="md" sx={{ backgroundColor: '#ffffff' }}>
+                    <Paper withBorder shadow="sm" p="xl" radius="md" style={{ backgroundColor: '#ffffff' }}>
                         <form onSubmit={handleSubmit}>
                             <Stack spacing="md">
 
@@ -389,12 +389,7 @@ export default function NewBuildDailyPart() {
                                     color="dark"
                                     fullWidth
                                     mt="xl"
-                                    sx={{
-                                        backgroundColor: '#000000',
-                                        '&:hover': {
-                                            backgroundColor: '#2c2c2c',
-                                        },
-                                    }}
+                                    style={{ backgroundColor: '#000000' }}
                                 >
                                     Salvar
                                 </Button>

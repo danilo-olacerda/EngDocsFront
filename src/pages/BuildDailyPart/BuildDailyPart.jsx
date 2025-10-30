@@ -87,12 +87,12 @@ export default function BuildDailyPart() {
         <>
             <Header />
             <Box
-                sx={(theme) => ({
+                style={{
                     marginTop: 80,
-                    padding: theme.spacing.xl,
+                    padding: '32px',
                     minHeight: 'calc(100vh - 80px)',
                     backgroundColor: '#fafafa',
-                })}
+                }}
             >
                 <Container size="xl">
                     <Button
@@ -100,12 +100,9 @@ export default function BuildDailyPart() {
                         size="lg"
                         color="dark"
                         onClick={() => navigate("/buildDailyPart/new")}
-                        sx={{
+                        style={{
                             backgroundColor: '#000000',
                             marginBottom: 24,
-                            '&:hover': {
-                                backgroundColor: '#2c2c2c',
-                            },
                         }}
                     >
                         Adicionar nova
@@ -121,18 +118,7 @@ export default function BuildDailyPart() {
                             highlightOnHover
                             withTableBorder
                             withColumnBorders
-                            sx={(theme) => ({
-                                backgroundColor: '#ffffff',
-                                '& thead tr th': {
-                                    backgroundColor: '#f5f5f5',
-                                    color: '#000000',
-                                    fontWeight: 600,
-                                    borderBottom: '2px solid #e0e0e0',
-                                },
-                                '& tbody tr:hover': {
-                                    backgroundColor: '#fafafa',
-                                },
-                            })}
+                            style={{ backgroundColor: '#ffffff' }}
                         >
                             <thead>
                                 <tr>

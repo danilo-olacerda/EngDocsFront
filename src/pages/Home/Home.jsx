@@ -7,26 +7,26 @@ export default function Home() {
         <>
             <Header />
             <Box
-                sx={(theme) => ({
+                style={{
                     marginTop: 80,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     minHeight: 'calc(100vh - 80px)',
-                    padding: theme.spacing.xl,
-                    backgroundColor: theme.colors.gray[0],
-                })}
+                    padding: '32px',
+                    backgroundColor: '#f8f9fa',
+                }}
             >
                 <Container size="md">
                     <Title
                         align="center"
                         order={1}
-                        sx={(theme) => ({
+                        style={{
                             fontSize: 32,
                             fontWeight: 700,
-                            color: theme.colors.dark[9],
+                            color: '#212529',
                             lineHeight: 1.4,
-                        })}
+                        }}
                     >
                         Bem vindo(a)! Selecione uma opção acima para navegar entre os registros.
                     </Title>

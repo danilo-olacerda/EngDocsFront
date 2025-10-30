@@ -1,6 +1,3 @@
-// Common reusable styles for Mantine components
-// Import these in your components for consistency
-
 export const pageContainerStyles = (theme) => ({
   display: 'flex',
   justifyContent: 'center',

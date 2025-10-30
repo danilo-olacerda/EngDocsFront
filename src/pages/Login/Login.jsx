@@ -1,9 +1,10 @@
-import { Container, Title, Paper, TextInput, PasswordInput, Button, Text, Center, Box } from '@mantine/core';
+import { Container, Image, Paper, TextInput, PasswordInput, Button, Text, Center, Box } from '@mantine/core';
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Loader } from '@mantine/core';
 import UserContext from "../../contexts/UserContext.jsx";
 import { login } from "../../services/authService.jsx";
+import EngDocsIcon from '../../assets/Eng.png';
 
 export default function Login() {
 
@@ -37,27 +38,18 @@ export default function Login() {
 
   return (
     <Box
-      sx={(theme) => ({
+      style={{
         display: 'flex',
+        minHeight: '100vh',
+        height: '100vh',
         justifyContent: 'center',
         alignItems: 'center',
-        minHeight: '100vh',
-        backgroundColor: theme.colors.gray[0],
-        padding: theme.spacing.md,
-      })}
+        backgroundColor: '#f8f9fa',
+        padding: '16px',
+      }}
     >
       <Container size={420} my={40}>
-        <Title
-          align="center"
-          sx={(theme) => ({
-            fontWeight: 900,
-            fontSize: 42,
-            marginBottom: theme.spacing.xl,
-            color: theme.black,
-          })}
-        >
-          EngDocs
-        </Title>
+        <Image src={EngDocsIcon} alt="EngDocs" height={100} />
 
         <Paper
           withBorder
@@ -65,9 +57,7 @@ export default function Login() {
           p={30}
           mt={30}
           radius="md"
-          sx={(theme) => ({
-            backgroundColor: theme.white,
-          })}
+          style={{ backgroundColor: '#ffffff' }}
         >
           <form onSubmit={send}>
             <TextInput
@@ -96,12 +86,7 @@ export default function Login() {
               disabled={loading}
               size="md"
               color="dark"
-              sx={(theme) => ({
-                backgroundColor: theme.black,
-                '&:hover': {
-                  backgroundColor: theme.colors.dark[9],
-                },
-              })}
+              style={{ backgroundColor: '#000000' }}
             >
               {loading ? <Loader size="sm" color="white" /> : 'Entrar'}
             </Button>
@@ -112,14 +97,10 @@ export default function Login() {
           <Text
             size="sm"
             weight={600}
-            sx={(theme) => ({
+            style={{
               cursor: loading ? 'not-allowed' : 'pointer',
-              color: theme.colors.dark[6],
-              '&:hover': loading ? {} : {
-                color: theme.black,
-                textDecoration: 'underline',
-              },
-            })}
+              color: '#495057',
+            }}
             onClick={() => !loading && navigate("/register")}
           >
             Criar nova empresa

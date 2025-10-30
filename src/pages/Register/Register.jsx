@@ -60,24 +60,24 @@ export default function Register() {
 
     return (
         <Box
-            sx={(theme) => ({
+            style={{
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
                 minHeight: '100vh',
-                backgroundColor: theme.colors.gray[0],
-                padding: theme.spacing.md,
-            })}
+                backgroundColor: '#f8f9fa',
+                padding: '16px',
+            }}
         >
             <Container size={500} my={40}>
                 <Title
                     align="center"
-                    sx={(theme) => ({
+                    style={{
                         fontWeight: 900,
                         fontSize: 42,
-                        marginBottom: theme.spacing.xl,
-                        color: theme.black,
-                    })}
+                        marginBottom: '32px',
+                        color: '#000000',
+                    }}
                 >
                     EngDocs
                 </Title>
@@ -88,9 +88,7 @@ export default function Register() {
                     p={30}
                     mt={30}
                     radius="md"
-                    sx={(theme) => ({
-                        backgroundColor: theme.white,
-                    })}
+                    style={{ backgroundColor: '#ffffff' }}
                 >
                     <form onSubmit={send}>
                         <Stack spacing="md">
@@ -169,12 +167,7 @@ export default function Register() {
                                 size="md"
                                 color="dark"
                                 mt="md"
-                                sx={(theme) => ({
-                                    backgroundColor: theme.black,
-                                    '&:hover': {
-                                        backgroundColor: theme.colors.dark[9],
-                                    },
-                                })}
+                                style={{ backgroundColor: '#000000' }}
                             >
                                 {loading ? <Loader size="sm" color="white" /> : 'Cadastrar'}
                             </Button>
@@ -186,14 +179,10 @@ export default function Register() {
                     <Text
                         size="sm"
                         weight={600}
-                        sx={(theme) => ({
+                        style={{
                             cursor: loading ? 'not-allowed' : 'pointer',
-                            color: theme.colors.dark[6],
-                            '&:hover': loading ? {} : {
-                                color: theme.black,
-                                textDecoration: 'underline',
-                            },
-                        })}
+                            color: '#495057',
+                        }}
                         onClick={() => !loading && navigate("/")}
                     >
                         Empresa já cadastrada? Faça login!

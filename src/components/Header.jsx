@@ -34,36 +34,33 @@ export default function Header() {
     return (
         <Box
             component="header"
-            sx={(theme) => ({
+            style={{
                 position: 'fixed',
                 top: 0,
                 left: 0,
                 right: 0,
                 height: 60,
-                borderBottom: `1px solid ${theme.colors.gray[3]}`,
-                backgroundColor: theme.white,
+                borderBottom: '1px solid #dee2e6',
+                backgroundColor: '#ffffff',
                 zIndex: 100,
                 display: 'flex',
                 alignItems: 'center',
                 padding: '0 20px',
                 justifyContent: 'space-between',
-            })}
+            }}
         >
-            <Group position="apart" sx={{ width: '100%' }}>
+            <Group position="apart" style={{ width: '100%' }}>
                 <Group spacing="xl">
                     <Text
                         size="lg"
                         weight={600}
-                        sx={(theme) => ({
+                        style={{
                             cursor: 'pointer',
                             paddingBottom: 2,
-                            borderBottom: page === "dailyPart" ? `3px solid ${theme.black}` : '3px solid transparent',
+                            borderBottom: page === "dailyPart" ? '3px solid #000000' : '3px solid transparent',
                             transition: 'all 0.2s ease',
-                            '&:hover': {
-                                borderBottom: `3px solid ${theme.colors.gray[6]}`,
-                            },
                             display: 'none',
-                        })}
+                        }}
                         onClick={() => toPage("dailyPart")}
                     >
                         Diário de Equipamentos
@@ -71,15 +68,12 @@ export default function Header() {
                     <Text
                         size="lg"
                         weight={600}
-                        sx={(theme) => ({
+                        style={{
                             cursor: 'pointer',
                             paddingBottom: 2,
-                            borderBottom: page === "buildDailyPart" ? `3px solid ${theme.black}` : '3px solid transparent',
+                            borderBottom: page === "buildDailyPart" ? '3px solid #000000' : '3px solid transparent',
                             transition: 'all 0.2s ease',
-                            '&:hover': {
-                                borderBottom: `3px solid ${theme.colors.gray[6]}`,
-                            },
-                        })}
+                        }}
                         onClick={() => toPage("buildDailyPart")}
                     >
                         Diário de Obras
@@ -88,11 +82,7 @@ export default function Header() {
                 <ActionIcon
                     size="lg"
                     onClick={logOut}
-                    sx={(theme) => ({
-                        '&:hover': {
-                            backgroundColor: theme.colors.gray[1],
-                        },
-                    })}
+                    style={{ backgroundColor: 'transparent' }}
                 >
                     <IoExit size={28} />
                 </ActionIcon>
