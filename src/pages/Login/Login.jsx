@@ -2,8 +2,8 @@ import { Container, Title, Paper, TextInput, PasswordInput, Button, Text, Center
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Loader } from '@mantine/core';
-import UserContext from "../../contexts/UserContext.js";
-import { login } from "../../services/authService.js";
+import UserContext from "../../contexts/UserContext.jsx";
+import { login } from "../../services/authService.jsx";
 
 export default function Login() {
 
@@ -20,18 +20,18 @@ export default function Login() {
       email,
       password
     };
-    
-    try {
-        const newToken = await login(body);
 
-        setToken(newToken.token);
-        localStorage.setItem("token", JSON.stringify(newToken.token));
-        navigate("/home");
-        
+    try {
+      const newToken = await login(body);
+
+      setToken(newToken.token);
+      localStorage.setItem("token", JSON.stringify(newToken.token));
+      navigate("/home");
+
     } catch (error) {
-        alert("Email ou senha incorretos");
+      alert("Email ou senha incorretos");
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   }
 

@@ -1,16 +1,17 @@
-import Header from '../../components/Header';
-import { Box, Container, Button, Table, ActionIcon, Group, Loader, Center } from '@mantine/core';
+import Header from '../../components/Header.jsx';
+import { getBuildDailyParts, deleteBuildDailyPart } from '../../services/dailyService.jsx';
+import { generateBuildDailyPartPDF } from '../../services/pdfService.jsx';
 import { useContext, useEffect, useState } from 'react';
-import UserContext from '../../contexts/UserContext';
-import { getDailyParts } from '../../services/dailyService';
+import UserContext from '../../contexts/UserContext.jsx';
+import { Box, Container, Button, Table, ActionIcon, Group, Loader, Center } from '@mantine/core';
 import dayjs from 'dayjs';
 import { AiFillEdit, AiFillFilePdf } from 'react-icons/ai';
 import { BsTrashFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 
-export default function DailyPart(){
+export default function BuildDailyPart() {
 
-    const [dailyParts, setDailyParts] = useState([{build: {}}]);
+    const [buildDailyParts, setBuildDailyParts] = useState([{ build: {} }]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const { token } = useContext(UserContext);
@@ -23,31 +24,66 @@ export default function DailyPart(){
             }
         }
 
-        getDailyParts(header).then(response => {
+        getBuildDailyParts(header).then(response => {
             handleDate(response);
             setLoading(false);
         })
-        .catch(error => {
-            if(error.response.status === 401){
-                alert('Sua sessão expirou, faça login novamente');
-                window.location.href = '/';
-            }
-            setLoading(false);
-        });
+            .catch(error => {
+                if (error.response.status === 401) {
+                    alert('Sua sessão expirou, faça login novamente');
+                    window.location.href = '/';
+                }
+                setLoading(false);
+            });
 
     }, [token]);
 
     function handleDate(items) {
 
-        for(let item of items) {
+        items.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        for (let item of items) {
             item.date = dayjs(item.date).format('DD/MM/YYYY');
         }
 
-        setDailyParts(items);
+        setBuildDailyParts(items);
 
     }
 
-    return(
+    async function handleDelete(id) {
+        const confirm = window.confirm('Tem certeza que deseja excluir o registro ?');
+        if (!confirm) return;
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        };
+
+        try {
+
+            await deleteBuildDailyPart(id, config);
+            alert('Registro excluído com sucesso');
+            buildDailyParts.splice(buildDailyParts.findIndex(item => item.id === id), 1);
+            setBuildDailyParts([...buildDailyParts]);
+
+        } catch (error) {
+
+            if (error.response.status === 401) {
+                alert('Sua sessão expirou, faça login novamente');
+                navigate('/');
+            } else {
+                alert('Não foi possível excluir o registro');
+            }
+
+        }
+    }
+
+    function generatePDF(buildDailyPartPDF) {
+        generateBuildDailyPartPDF(buildDailyPartPDF);
+    }
+
+    return (
         <>
             <Header />
             <Box
@@ -63,7 +99,7 @@ export default function DailyPart(){
                         fullWidth
                         size="lg"
                         color="dark"
-                        onClick={() => navigate("/dailyPart/new")}
+                        onClick={() => navigate("/buildDailyPart/new")}
                         sx={{
                             backgroundColor: '#000000',
                             marginBottom: 24,
@@ -80,8 +116,8 @@ export default function DailyPart(){
                             <Loader size="lg" color="dark" />
                         </Center>
                     ) : (
-                        <Table 
-                            striped 
+                        <Table
+                            striped
                             highlightOnHover
                             withTableBorder
                             withColumnBorders
@@ -106,37 +142,39 @@ export default function DailyPart(){
                                 </tr>
                             </thead>
                             <tbody>
-                                {dailyParts.length === 0 || !dailyParts[0].date ? (
+                                {buildDailyParts.length === 0 || !buildDailyParts[0].date ? (
                                     <tr>
                                         <td colSpan={3} style={{ textAlign: 'center', padding: 40 }}>
                                             Nenhum registro encontrado
                                         </td>
                                     </tr>
                                 ) : (
-                                    dailyParts.map((dailyPart, index) => (
+                                    buildDailyParts.map((buildDailyPart, index) => (
                                         <tr key={index}>
-                                            <td>{dailyPart.date}</td>
-                                            <td>{dailyPart.build?.name || 'N/A'}</td>
+                                            <td>{buildDailyPart.date}</td>
+                                            <td>{buildDailyPart.build?.name || 'N/A'}</td>
                                             <td>
                                                 <Group spacing="sm">
-                                                    <ActionIcon 
-                                                        color="dark" 
+                                                    <ActionIcon
+                                                        color="dark"
                                                         variant="subtle"
                                                         size="lg"
                                                     >
                                                         <AiFillEdit size={20} />
                                                     </ActionIcon>
-                                                    <ActionIcon 
-                                                        color="red" 
+                                                    <ActionIcon
+                                                        color="red"
                                                         variant="subtle"
                                                         size="lg"
+                                                        onClick={() => handleDelete(buildDailyPart.id)}
                                                     >
                                                         <BsTrashFill size={18} />
                                                     </ActionIcon>
-                                                    <ActionIcon 
-                                                        color="dark" 
+                                                    <ActionIcon
+                                                        color="dark"
                                                         variant="subtle"
                                                         size="lg"
+                                                        onClick={() => generatePDF(buildDailyPart)}
                                                     >
                                                         <AiFillFilePdf size={22} />
                                                     </ActionIcon>

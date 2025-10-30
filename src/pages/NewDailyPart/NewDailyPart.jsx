@@ -1,7 +1,7 @@
 import { Box, Container, Title } from '@mantine/core';
-import Header from '../../components/Header';
+import Header from '../../components/Header.jsx';
 
-export default function NewDailyPart(){
+export default function NewDailyPart() {
     return (
         <>
             <Header />

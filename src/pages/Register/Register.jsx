@@ -2,7 +2,7 @@ import { Container, Title, Paper, TextInput, PasswordInput, Button, Text, Center
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Loader } from '@mantine/core';
-import { register } from "../../services/authService";
+import { register } from "../../services/authService.jsx";
 
 export default function Register() {
 
@@ -22,7 +22,7 @@ export default function Register() {
 
         setLoading(true);
 
-        if (password!==confirmPassword) {
+        if (password !== confirmPassword) {
             alert("As senhas não conferem!");
             setLoading(false);
             return;
@@ -39,7 +39,7 @@ export default function Register() {
         };
 
         try {
-            
+
             await register(body);
             alert("Cadastro realizado com sucesso!");
             setLoading(false);
@@ -50,7 +50,7 @@ export default function Register() {
                 alert("Esse email já está cadastrado!");
                 return;
             }
-            
+
             alert("Erro ao cadastrar!");
         } finally {
             setLoading(false);

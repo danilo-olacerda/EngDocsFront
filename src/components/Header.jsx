@@ -2,7 +2,7 @@ import { Box, Group, Text, ActionIcon } from '@mantine/core';
 import { IoExit } from 'react-icons/io5';
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../contexts/UserContext";
+import UserContext from "../contexts/UserContext.jsx";
 import { useLocation } from 'react-router-dom'
 
 export default function Header() {
@@ -24,7 +24,7 @@ export default function Header() {
         const confirm = window.confirm("Tem certeza que deseja sair ?");
 
         if (!confirm)
-        return;
+            return;
 
         localStorage.clear();
         setToken(null);
